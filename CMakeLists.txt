@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.15)
 project(chip8)
 
+set(CMAKE_MODULE_PATH
+    ${CMAKE_SOURCE_DIR}/cmake/modules
+    ${CMAKE_MODULE_PATH})
+
+set(CLANG_FORMAT_EXCLUDE_PATTERNS "build/")
+find_package(ClangFormat)
+
 find_package(Boost 1.68.0 COMPONENTS program_options system)
 find_package(SDL2 REQUIRED)
 
