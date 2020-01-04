@@ -54,11 +54,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 set(EMULATOR_SOURCE_FILES
     src/${CMAKE_PROJECT_NAME}_emulator.cpp
     src/Emulator.cpp)
-
-set(DISASSEMBLER_SOURCE_FILES
-    src/${CMAKE_PROJECT_NAME}_disassembler.cpp
-    src/Disassembler.cpp)
-
 add_executable(${CMAKE_PROJECT_NAME}_emulator
     ${EMULATOR_SOURCE_FILES})
 target_link_libraries(${CMAKE_PROJECT_NAME}_emulator
@@ -70,6 +65,10 @@ target_link_libraries(${CMAKE_PROJECT_NAME}_emulator
     Boost::system
     ${CMAKE_PROJECT_NAME})
 
+
+set(DISASSEMBLER_SOURCE_FILES
+    src/${CMAKE_PROJECT_NAME}_disassembler.cpp
+    src/Disassembler.cpp)
 add_executable(${CMAKE_PROJECT_NAME}_disassembler
     ${DISASSEMBLER_SOURCE_FILES})
 target_link_libraries(${CMAKE_PROJECT_NAME}_disassembler
