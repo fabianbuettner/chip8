@@ -1,0 +1,6 @@
+[submodule "third_party/chip8Archive"]
+	path = third_party/chip8Archive
+	url = https://github.com/JohnEarnest/chip8Archive
+[submodule "third_party/chip8"]
+	path = third_party/chip8
+	url = https://github.com/badlogic/chip8
