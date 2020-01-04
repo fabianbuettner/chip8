@@ -65,7 +65,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME}_emulator
     Boost::system
     ${CMAKE_PROJECT_NAME})
 
-
 set(DISASSEMBLER_SOURCE_FILES
     src/${CMAKE_PROJECT_NAME}_disassembler.cpp
     src/Disassembler.cpp)
