@@ -7,6 +7,7 @@
 class Disassembler {
 public:
     Cpu& cpu;
+
 public:
     Disassembler(Cpu& cpu);
     ~Disassembler(void);

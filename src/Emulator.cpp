@@ -2,8 +2,9 @@
 
 #include <boost/bind.hpp>
 
-Emulator::Emulator(const std::string& name, boost::asio::io_service& io, Cpu& cpu) : cpu{cpu},
-    cpu_clock(io, boost::posix_time::milliseconds(1000 / cpu.clock_speed))
+Emulator::Emulator(const std::string& name, boost::asio::io_service& io, Cpu& cpu)
+    : cpu { cpu }
+    , cpu_clock(io, boost::posix_time::milliseconds(1000 / cpu.clock_speed))
 {
     SDL_Init(SDL_INIT_VIDEO);
     std::uint8_t scale = 10;
@@ -18,129 +19,131 @@ Emulator::Emulator(const std::string& name, boost::asio::io_service& io, Cpu& cp
     cpu_clock.async_wait(boost::bind(&Emulator::cycle, this));
 }
 
-Emulator::~Emulator(void) {
+Emulator::~Emulator(void)
+{
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
-void Emulator::cycle(void) {
+void Emulator::cycle(void)
+{
     SDL_Event event;
 
-    while(SDL_PollEvent(&event)) {
-        switch(event.type) {
-            case SDL_QUIT:
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        case SDL_QUIT:
+            return;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym) {
+            case SDLK_ESCAPE:
                 return;
-            case SDL_KEYDOWN:
-                switch(event.key.keysym.sym) {
-                    case SDLK_ESCAPE:
-                        return;
-                    case SDLK_x:
-                        cpu.keypad[0] = 1;
-                        break;
-                    case SDLK_1:
-                        cpu.keypad[1] = 1;
-                        break;
-                    case SDLK_2:
-                        cpu.keypad[2] = 1;
-                        break;
-                    case SDLK_3:
-                        cpu.keypad[3] = 1;
-                        break;
-                    case SDLK_q:
-                        cpu.keypad[4] = 1;
-                        break;
-                    case SDLK_w:
-                        cpu.keypad[5] = 1;
-                        break;
-                    case SDLK_e:
-                        cpu.keypad[6] = 1;
-                        break;
-                    case SDLK_a:
-                        cpu.keypad[7] = 1;
-                        break;
-                    case SDLK_s:
-                        cpu.keypad[8] = 1;
-                        break;
-                    case SDLK_d:
-                        cpu.keypad[9] = 1;
-                        break;
-                    case SDLK_y:
-                        cpu.keypad[10] = 1;
-                        break;
-                    case SDLK_c:
-                        cpu.keypad[11] = 1;
-                        break;
-                    case SDLK_4:
-                        cpu.keypad[12] = 1;
-                        break;
-                    case SDLK_r:
-                        cpu.keypad[13] = 1;
-                        break;
-                    case SDLK_f:
-                        cpu.keypad[14] = 1;
-                        break;
-                    case SDLK_v:
-                        cpu.keypad[15] = 1;
-                        break;
-                }
+            case SDLK_x:
+                cpu.keypad[0] = 1;
                 break;
-            case SDL_KEYUP:
-                switch(event.key.keysym.sym) {
-                    case SDLK_x:
-                        cpu.keypad[0] = 0;
-                        break;
-                    case SDLK_1:
-                        cpu.keypad[1] = 0;
-                        break;
-                    case SDLK_2:
-                        cpu.keypad[2] = 0;
-                        break;
-                    case SDLK_3:
-                        cpu.keypad[3] = 0;
-                        break;
-                    case SDLK_q:
-                        cpu.keypad[4] = 0;
-                        break;
-                    case SDLK_w:
-                        cpu.keypad[5] = 0;
-                        break;
-                    case SDLK_e:
-                        cpu.keypad[6] = 0;
-                        break;
-                    case SDLK_a:
-                        cpu.keypad[7] = 0;
-                        break;
-                    case SDLK_s:
-                        cpu.keypad[8] = 0;
-                        break;
-                    case SDLK_d:
-                        cpu.keypad[9] = 0;
-                        break;
-                    case SDLK_y:
-                        cpu.keypad[10] = 0;
-                        break;
-                    case SDLK_c:
-                        cpu.keypad[11] = 0;
-                        break;
-                    case SDLK_4:
-                        cpu.keypad[12] = 0;
-                        break;
-                    case SDLK_r:
-                        cpu.keypad[13] = 0;
-                        break;
-                    case SDLK_f:
-                        cpu.keypad[14] = 0;
-                        break;
-                    case SDLK_v:
-                        cpu.keypad[15] = 0;
-                        break;
-                }
+            case SDLK_1:
+                cpu.keypad[1] = 1;
                 break;
+            case SDLK_2:
+                cpu.keypad[2] = 1;
+                break;
+            case SDLK_3:
+                cpu.keypad[3] = 1;
+                break;
+            case SDLK_q:
+                cpu.keypad[4] = 1;
+                break;
+            case SDLK_w:
+                cpu.keypad[5] = 1;
+                break;
+            case SDLK_e:
+                cpu.keypad[6] = 1;
+                break;
+            case SDLK_a:
+                cpu.keypad[7] = 1;
+                break;
+            case SDLK_s:
+                cpu.keypad[8] = 1;
+                break;
+            case SDLK_d:
+                cpu.keypad[9] = 1;
+                break;
+            case SDLK_y:
+                cpu.keypad[10] = 1;
+                break;
+            case SDLK_c:
+                cpu.keypad[11] = 1;
+                break;
+            case SDLK_4:
+                cpu.keypad[12] = 1;
+                break;
+            case SDLK_r:
+                cpu.keypad[13] = 1;
+                break;
+            case SDLK_f:
+                cpu.keypad[14] = 1;
+                break;
+            case SDLK_v:
+                cpu.keypad[15] = 1;
+                break;
+            }
+            break;
+        case SDL_KEYUP:
+            switch (event.key.keysym.sym) {
+            case SDLK_x:
+                cpu.keypad[0] = 0;
+                break;
+            case SDLK_1:
+                cpu.keypad[1] = 0;
+                break;
+            case SDLK_2:
+                cpu.keypad[2] = 0;
+                break;
+            case SDLK_3:
+                cpu.keypad[3] = 0;
+                break;
+            case SDLK_q:
+                cpu.keypad[4] = 0;
+                break;
+            case SDLK_w:
+                cpu.keypad[5] = 0;
+                break;
+            case SDLK_e:
+                cpu.keypad[6] = 0;
+                break;
+            case SDLK_a:
+                cpu.keypad[7] = 0;
+                break;
+            case SDLK_s:
+                cpu.keypad[8] = 0;
+                break;
+            case SDLK_d:
+                cpu.keypad[9] = 0;
+                break;
+            case SDLK_y:
+                cpu.keypad[10] = 0;
+                break;
+            case SDLK_c:
+                cpu.keypad[11] = 0;
+                break;
+            case SDLK_4:
+                cpu.keypad[12] = 0;
+                break;
+            case SDLK_r:
+                cpu.keypad[13] = 0;
+                break;
+            case SDLK_f:
+                cpu.keypad[14] = 0;
+                break;
+            case SDLK_v:
+                cpu.keypad[15] = 0;
+                break;
+            }
+            break;
         }
     }
-    if(!cpu.cycle()) {
+    if (!cpu.cycle()) {
         return;
     }
     SDL_UpdateTexture(texture, nullptr, &cpu.display[0], sizeof(cpu.display[0]) * 64);

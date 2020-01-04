@@ -6,6 +6,7 @@
 class Opcode00EE : public Opcode {
 private:
     Cpu& cpu;
+
 public:
     Opcode00EE(Cpu& cpu);
 

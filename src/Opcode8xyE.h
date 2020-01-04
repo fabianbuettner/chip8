@@ -8,6 +8,7 @@ private:
     Cpu& cpu;
     std::uint8_t x = 0;
     std::uint8_t y = 0;
+
 public:
     Opcode8xyE(Cpu& cpu);
 

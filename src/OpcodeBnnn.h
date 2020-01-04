@@ -7,6 +7,7 @@ class OpcodeBnnn : public Opcode {
 private:
     Cpu& cpu;
     std::uint16_t nnn = 0;
+
 public:
     OpcodeBnnn(Cpu& cpu);
 

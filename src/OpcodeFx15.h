@@ -7,6 +7,7 @@ class OpcodeFx15 : public Opcode {
 private:
     Cpu& cpu;
     std::uint8_t x = 0;
+
 public:
     OpcodeFx15(Cpu& cpu);
 

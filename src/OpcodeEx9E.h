@@ -7,6 +7,7 @@ class OpcodeEx9E : public Opcode {
 private:
     Cpu& cpu;
     std::uint8_t x = 0;
+
 public:
     OpcodeEx9E(Cpu& cpu);
 

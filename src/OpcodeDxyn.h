@@ -9,6 +9,7 @@ private:
     std::uint8_t x = 0;
     std::uint8_t y = 0;
     std::uint8_t n = 0;
+
 public:
     OpcodeDxyn(Cpu& cpu);
 

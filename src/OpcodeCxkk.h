@@ -9,6 +9,7 @@ private:
     std::uint8_t x = 0;
     std::uint8_t kk = 0;
     std::uint8_t random_byte = 0;
+
 public:
     OpcodeCxkk(Cpu& cpu);
 

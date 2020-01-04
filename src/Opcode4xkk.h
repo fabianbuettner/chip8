@@ -8,6 +8,7 @@ private:
     Cpu& cpu;
     std::uint8_t x = 0;
     std::uint8_t kk = 0;
+
 public:
     Opcode4xkk(Cpu& cpu);
 

@@ -7,6 +7,7 @@ class OpcodeAnnn : public Opcode {
 private:
     Cpu& cpu;
     std::uint16_t nnn = 0;
+
 public:
     OpcodeAnnn(Cpu& cpu);
 

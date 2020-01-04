@@ -20,7 +20,7 @@ endforeach ()
 add_custom_target(format
     COMMENT "Running clang-format to change files"
     COMMAND ${CLANG_FORMAT_BIN}
-    -style=file
+    -style=Webkit
     -i
     ${ALL_SOURCE_FILES}
 )
@@ -31,7 +31,7 @@ add_custom_target(format-check
     # Use ! to negate the result for correct output
     COMMAND !
     ${CLANG_FORMAT_BIN}
-    -style=file
+    -style=Webkit
     -output-replacements-xml
     ${ALL_SOURCE_FILES}
     | grep -q "replacement offset" 
