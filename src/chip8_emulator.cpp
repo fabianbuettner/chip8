@@ -1,5 +1,4 @@
 #include "Cpu.h"
-//#include "Disassembler.h"
 #include "Emulator.h"
 
 #include <boost/asio.hpp>
@@ -47,11 +46,6 @@ int main(int ac, char* av[]) {
         }
         Emulator emu{"chip8-emulator", io_context, cpu};
         io_context.run();
-        //Disassembler disassembler{cpu};
-        //std::cout << disassembler << std::endl;
-        //while(emu.run) {
-        //    emu.cycle();
-        //}
     }
     catch (std::exception& e) {
         std::cerr << "exception: " << e.what() << std::endl;
