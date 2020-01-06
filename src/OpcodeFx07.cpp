@@ -3,15 +3,15 @@
 #include <iomanip>
 #include <sstream>
 
-OpcodeFx07::OpcodeFx07(Cpu& cpu)
+OpcodeFx07::OpcodeFx07(CpuChip8& cpu)
     : cpu { cpu }
 {
-    x = (cpu.opcode & 0x0f00) >> 8;
 }
 
 bool OpcodeFx07::execute(void)
 {
-    cpu.V[x] = cpu.delay_timer;
+    std::uint8_t x = (opcode & 0x0f00) >> 8;
+    cpu.v[x] = cpu.delay_timer;
     return true;
 }
 
@@ -25,6 +25,7 @@ std::string OpcodeFx07::getDescription(void)
 std::string OpcodeFx07::getMnemonic(void)
 {
     std::stringstream stream;
+    std::uint8_t x = (opcode & 0x0f00) >> 8;
     stream << "LD V" << std::hex << static_cast<std::uint16_t>(x) << ", DT";
     return stream.str();
 }

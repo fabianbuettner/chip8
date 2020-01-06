@@ -1,15 +1,14 @@
 #pragma once
 
-#include "Cpu.h"
+#include "CpuChip8.h"
 #include "Opcode.h"
 
 class Opcode2nnn : public Opcode {
 private:
-    Cpu& cpu;
-    std::uint16_t nnn = 0;
+    CpuChip8& cpu;
 
 public:
-    Opcode2nnn(Cpu& cpu);
+    Opcode2nnn(CpuChip8& cpu);
 
     bool execute(void) final;
     std::string getDescription(void) final;

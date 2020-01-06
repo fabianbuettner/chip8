@@ -3,20 +3,20 @@
 #include <iomanip>
 #include <sstream>
 
-OpcodeFx33::OpcodeFx33(Cpu& cpu)
+OpcodeFx33::OpcodeFx33(CpuChip8& cpu)
     : cpu { cpu }
 {
-    x = (cpu.opcode & 0x0f00) >> 8;
 }
 
 bool OpcodeFx33::execute(void)
 {
-    std::uint8_t value = cpu.V[x];
-    cpu.program[cpu.I + 2] = value % 10;
+    std::uint8_t x = (opcode & 0x0f00) >> 8;
+    std::uint8_t value = cpu.v[x];
+    cpu.memory[cpu.i + 2] = value % 10;
     value /= 10;
-    cpu.program[cpu.I + 1] = value % 10;
+    cpu.memory[cpu.i + 1] = value % 10;
     value /= 10;
-    cpu.program[cpu.I] = value % 10;
+    cpu.memory[cpu.i] = value % 10;
     return true;
 }
 
@@ -30,6 +30,7 @@ std::string OpcodeFx33::getDescription(void)
 std::string OpcodeFx33::getMnemonic(void)
 {
     std::stringstream stream;
+    std::uint8_t x = (opcode & 0x0f00) >> 8;
     stream << "LD B, V" << std::hex << static_cast<std::uint16_t>(x);
     return stream.str();
 }

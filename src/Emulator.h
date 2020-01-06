@@ -1,20 +1,17 @@
 #pragma once
 
-#include "Cpu.h"
+#include "Machine.h"
 
-#include <SDL2/SDL.h>
 #include <boost/asio.hpp>
 
 class Emulator {
 private:
-    Cpu& cpu;
+    std::uint32_t emulation_clock_speed;
+    Machine& machine;
     boost::asio::deadline_timer cpu_clock;
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_Texture* texture;
 
 public:
-    Emulator(const std::string& name, boost::asio::io_service& io, Cpu& cpu);
+    Emulator(boost::asio::io_service& io, Machine& machine, std::uint32_t emulation_clock_speed);
     ~Emulator(void);
 
 private:

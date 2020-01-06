@@ -50,6 +50,11 @@ set(COMMON_SOURCE_FILES
     src/OpcodeFx55.cpp
     src/OpcodeFx65.cpp
     src/Cpu.cpp
+    src/CpuChip8.cpp
+    src/DisplayChip8.cpp
+    src/InputChip8.cpp
+    src/MachineChip8.cpp
+    src/MemoryChip8.cpp
     src/utilities.cpp)
 
 add_library(${CMAKE_PROJECT_NAME} STATIC
@@ -80,5 +85,6 @@ add_executable(${CMAKE_PROJECT_NAME}_disassembler
 target_link_libraries(${CMAKE_PROJECT_NAME}_disassembler
     PRIVATE
     stdc++fs
+    ${SDL2_LIBRARIES}
     Boost::program_options
     ${CMAKE_PROJECT_NAME})

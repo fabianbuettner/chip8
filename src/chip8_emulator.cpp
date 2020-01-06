@@ -1,17 +1,28 @@
-#include "Cpu.h"
+#include "CpuChip8.h"
+#include "DisplayChip8.h"
+#include "InputChip8.h"
+#include "MemoryChip8.h"
+#include "MachineChip8.h"
 #include "Emulator.h"
 
 #include <boost/asio.hpp>
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <SDL2/SDL.h>
 #include <stdexcept>
 
 int main(int ac, char* av[])
 {
-    std::uint32_t cpu_clock_speed; // in Hz
+    float scale;
+    std::uint32_t emulation_clock_speed; // in Hz
     std::string rom_file;
     boost::program_options::options_description desc("Allowed options");
-    desc.add_options()("cpu-clock-speed,c", boost::program_options::value<std::uint32_t>(&cpu_clock_speed)->default_value(120), "cpu clock speed")("help,h", "produce help message")("rom-file", boost::program_options::value<std::string>(&rom_file), "rom file")("verbosity,v", "enables verbosity");
+    desc.add_options()
+        ("emulation-clock-speed,e", boost::program_options::value<std::uint32_t>(&emulation_clock_speed)->default_value(120), "emulation clock speed")
+        ("help,h", "produce help message")("rom-file", boost::program_options::value<std::string>(&rom_file), "rom file")
+        ("scale,s", boost::program_options::value<float>(&scale)->default_value(10), "scale factor")
+        ("verbosity,v", "enables verbosity")
+    ;
     boost::program_options::positional_options_description p;
     p.add("rom-file", 1);
 
@@ -34,16 +45,24 @@ int main(int ac, char* av[])
 
     try {
         boost::asio::io_context io_context;
-        Cpu cpu { rom_file, cpu_clock_speed };
-        if (vm.count("verbosity")) {
+       
+        MemoryChip8 memory{ rom_file };
+        DisplayChip8 display{"chip8_emulator", scale};
+        InputChip8 input{};
+        CpuChip8 cpu{ memory, display, input, emulation_clock_speed};
+        if(vm.count("verbosity")) {
             cpu.setVerbosity(true);
         }
-        Emulator emu { "chip8-emulator", io_context, cpu };
+        MachineChip8 machine{ cpu, emulation_clock_speed};
+        Emulator emu { io_context, machine, emulation_clock_speed };
+
         io_context.run();
     } catch (std::exception& e) {
         std::cerr << "exception: " << e.what() << std::endl;
         return 3;
     }
+
+    atexit(SDL_Quit);
 
     return 0;
 }

@@ -1,4 +1,7 @@
-#include "Cpu.h"
+#include "CpuChip8.h"
+#include "DisplayChip8.h"
+#include "InputChip8.h"
+#include "MemoryChip8.h"
 #include "Disassembler.h"
 
 #include <boost/program_options.hpp>
@@ -31,7 +34,10 @@ int main(int ac, char* av[])
     }
 
     try {
-        Cpu cpu { rom_file, 0 };
+        MemoryChip8 memory{ rom_file };
+        DisplayChip8 display{"chip8_disassembler", 1.0f};
+        InputChip8 input{};
+        CpuChip8 cpu{ memory, display, input };
         Disassembler disassembler { cpu };
         std::cout << disassembler << std::endl;
     } catch (std::exception& e) {

@@ -1,6 +1,8 @@
 #include "Opcode00EE.h"
 
-Opcode00EE::Opcode00EE(Cpu& cpu)
+#include <sstream>
+
+Opcode00EE::Opcode00EE(CpuChip8& cpu)
     : cpu { cpu }
 {
 }
@@ -12,7 +14,7 @@ std::string Opcode00EE::getDescription(void)
 
 bool Opcode00EE::execute(void)
 {
-    cpu.PC = cpu.stack[--cpu.SP];
+    cpu.pc = cpu.stack[--cpu.sp];
     return true;
 }
 

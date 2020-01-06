@@ -1,15 +1,14 @@
 #pragma once
 
-#include "Cpu.h"
+#include "CpuChip8.h"
 #include "Opcode.h"
 
 class OpcodeFx18 : public Opcode {
 private:
-    Cpu& cpu;
-    std::uint8_t x = 0;
+    CpuChip8& cpu;
 
 public:
-    OpcodeFx18(Cpu& cpu);
+    OpcodeFx18(CpuChip8& cpu);
 
     bool execute(void) final;
     std::string getDescription(void) final;

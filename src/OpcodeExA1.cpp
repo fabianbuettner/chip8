@@ -3,16 +3,16 @@
 #include <iomanip>
 #include <sstream>
 
-OpcodeExA1::OpcodeExA1(Cpu& cpu)
+OpcodeExA1::OpcodeExA1(CpuChip8& cpu)
     : cpu { cpu }
 {
-    x = (cpu.opcode & 0x0f00) >> 8;
 }
 
 bool OpcodeExA1::execute(void)
 {
-    if (!cpu.keypad[cpu.V[x]])
-        cpu.PC += 2;
+    std::uint8_t x = (opcode & 0x0f00) >> 8;
+    if (!cpu.input.keypad[cpu.v[x]])
+        cpu.pc += 2;
 
     return true;
 }
@@ -27,6 +27,7 @@ std::string OpcodeExA1::getDescription(void)
 std::string OpcodeExA1::getMnemonic(void)
 {
     std::stringstream stream;
+    std::uint8_t x = (opcode & 0x0f00) >> 8;
     stream << "SKNP V" << std::hex << static_cast<std::uint16_t>(x);
     return stream.str();
 }

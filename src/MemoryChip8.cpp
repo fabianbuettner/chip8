@@ -1,0 +1,48 @@
+#include "MemoryChip8.h"
+
+#include <fstream>
+
+const std::array<const std::uint8_t, 16 * 5> sprites = {
+    0xf0, 0x90, 0x90, 0x90, 0xf0, // 0
+    0x20, 0x60, 0x20, 0x20, 0x70, // 1
+    0xf0, 0x10, 0xf0, 0x80, 0xf0, // 2
+    0xf0, 0x10, 0xf0, 0x10, 0xf0, // 3
+    0x90, 0x90, 0xf0, 0x10, 0x10, // 4
+    0xf0, 0x80, 0xf0, 0x10, 0xf0, // 5
+    0xf0, 0x80, 0xf0, 0x90, 0xf0, // 6
+    0xf0, 0x10, 0x20, 0x40, 0x40, // 7
+    0xf0, 0x90, 0xf0, 0x90, 0xf0, // 8
+    0xf0, 0x90, 0xf0, 0x10, 0xf0, // 9
+    0xf0, 0x90, 0xf0, 0x90, 0x90, // a
+    0xe0, 0x90, 0xe0, 0x90, 0xe0, // b
+    0xf0, 0x80, 0x80, 0x80, 0xf0, // c
+    0xe0, 0x90, 0x90, 0x90, 0xe0, // d
+    0xf0, 0x80, 0xf0, 0x80, 0xf0, // e
+    0xf0, 0x80, 0xf0, 0x80, 0x80 // f
+};
+
+MemoryChip8::MemoryChip8(const std::filesystem::path& path, std::uint16_t memory_size, std::uint16_t pc) {
+    if (!std::filesystem::is_regular_file(path)) {
+        throw std::invalid_argument("Could not open input file!");
+    }
+
+    if (std::filesystem::file_size(path) > memory_size - pc) {
+        throw std::invalid_argument("Program too large!");
+    }
+
+    memory.resize(std::filesystem::file_size(path) + pc, 0);
+
+    // Load sprites into memory
+    std::copy(sprites.begin(), sprites.end(), memory.begin() + sprite_address);
+
+    std::ifstream in { path, std::ios_base::binary };
+    in.read(reinterpret_cast<char*>(&memory[pc]), std::filesystem::file_size(path));
+}
+
+std::uint8_t &MemoryChip8::operator[](int index) {
+    return memory[index];
+}
+
+std::size_t MemoryChip8::size() const {
+    return memory.size();
+}
