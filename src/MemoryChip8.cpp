@@ -21,7 +21,8 @@ const std::array<const std::uint8_t, 16 * 5> sprites = {
     0xf0, 0x80, 0xf0, 0x80, 0x80 // f
 };
 
-MemoryChip8::MemoryChip8(const std::filesystem::path& path, std::uint16_t memory_size, std::uint16_t pc) {
+MemoryChip8::MemoryChip8(const std::filesystem::path& path, std::uint16_t memory_size, std::uint16_t pc)
+{
     if (!std::filesystem::is_regular_file(path)) {
         throw std::invalid_argument("Could not open input file!");
     }
@@ -39,10 +40,12 @@ MemoryChip8::MemoryChip8(const std::filesystem::path& path, std::uint16_t memory
     in.read(reinterpret_cast<char*>(&memory[pc]), std::filesystem::file_size(path));
 }
 
-std::uint8_t &MemoryChip8::operator[](int index) {
+std::uint8_t& MemoryChip8::operator[](int index)
+{
     return memory[index];
 }
 
-std::size_t MemoryChip8::size() const {
+std::size_t MemoryChip8::size() const
+{
     return memory.size();
 }

@@ -2,11 +2,14 @@
 
 #include <iostream>
 
-MachineChip8::MachineChip8(Cpu& cpu, std::uint32_t emulation_clock_speed) : cpu{ cpu } {
+MachineChip8::MachineChip8(Cpu& cpu, std::uint32_t emulation_clock_speed)
+    : cpu { cpu }
+{
 }
 
-bool MachineChip8::cycle(void) {
-    if(!cpu.cycle())
+bool MachineChip8::cycle(void)
+{
+    if (!cpu.cycle())
         return false;
     return true;
 }

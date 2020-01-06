@@ -1,14 +1,17 @@
 #include "InputChip8.h"
 
-InputChip8::InputChip8(void) {
+InputChip8::InputChip8(void)
+{
     SDL_InitSubSystem(SDL_INIT_EVENTS);
 }
 
-InputChip8::~InputChip8(void) {
+InputChip8::~InputChip8(void)
+{
     SDL_QuitSubSystem(SDL_INIT_EVENTS);
 }
 
-bool InputChip8::cycle(void) {
+bool InputChip8::cycle(void)
+{
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {

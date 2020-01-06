@@ -2,9 +2,9 @@
 
 #include "Display.h"
 
+#include <SDL2/SDL.h>
 #include <array>
 #include <cstdint>
-#include <SDL2/SDL.h>
 #include <string>
 
 const std::uint8_t width = 64;
@@ -15,8 +15,10 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* texture;
+
 public:
-    std::array<std::uint32_t, height * width> memory = { 0 };
+    std::array<std::uint32_t, height* width> memory = { 0 };
+
 public:
     DisplayChip8(const std::string& name, float scale);
     ~DisplayChip8(void);

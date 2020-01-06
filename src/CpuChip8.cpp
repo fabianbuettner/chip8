@@ -37,10 +37,12 @@
 
 #include <cstdlib>
 
-CpuChip8::CpuChip8(MemoryChip8& memory, DisplayChip8& display, InputChip8& input, std::uint32_t clock_speed, std::uint16_t pc) : memory{ memory},
-    display{ display },
-    input{ input},
-    pc{ pc } {
+CpuChip8::CpuChip8(MemoryChip8& memory, DisplayChip8& display, InputChip8& input, std::uint32_t clock_speed, std::uint16_t pc)
+    : memory { memory }
+    , display { display }
+    , input { input }
+    , pc { pc }
+{
     srand(time(NULL));
     opcodes[0x00E0] = std::make_unique<Opcode00E0>(*this);
     opcodes[0x00EE] = std::make_unique<Opcode00EE>(*this);
@@ -79,20 +81,19 @@ CpuChip8::CpuChip8(MemoryChip8& memory, DisplayChip8& display, InputChip8& input
     cycles_per_timer_tick = clock_speed / 60; // clock_speed Hz / 60 Hz
 }
 
-std::unique_ptr<Opcode> &CpuChip8::emitOpcode(std::uint8_t* pc)
+std::unique_ptr<Opcode>& CpuChip8::emitOpcode(std::uint8_t* pc)
 {
     opcode = (pc[0] << 8) | pc[1];
     uint8_t opcode_key = pc[0] >> 4;
     std::uint16_t mask = 0xf000;
-    if(opcode_key == 8) {
+    if (opcode_key == 8) {
         mask = 0xf00f;
-    }
-    else if(opcode_key == 0x00 || opcode_key == 0x0e || opcode_key == 0x0f) {
+    } else if (opcode_key == 0x00 || opcode_key == 0x0e || opcode_key == 0x0f) {
         mask = 0xf0ff;
     }
 
     std::unique_ptr<Opcode>& o = opcodes[opcode & mask];
-    if(o) {
+    if (o) {
         o->setOpcode(opcode);
     }
     return o;
@@ -103,7 +104,8 @@ void CpuChip8::setVerbosity(bool new_verbosity)
     verbosity = new_verbosity;
 }
 
-bool CpuChip8::cycle(void) {
+bool CpuChip8::cycle(void)
+{
     bool rc = false;
     static std::uint32_t cycle_counter = 1;
     std::unique_ptr<Opcode>& instruction = emitOpcode(&memory[pc]);
@@ -122,7 +124,6 @@ bool CpuChip8::cycle(void) {
     if (verbosity)
         std::cout << int_to_hexstring(opcode, 4) << "\t" << instruction->getMnemonic() << std::endl;
 
-
     if (cycle_counter >= cycles_per_timer_tick) {
         if (delay_timer) {
             --delay_timer;
@@ -134,7 +135,7 @@ bool CpuChip8::cycle(void) {
     }
 
     rc = input.cycle();
-    if(!rc)
+    if (!rc)
         return rc;
 
     cycle_counter++;
@@ -145,11 +146,17 @@ bool CpuChip8::cycle(void) {
 std::ostream& CpuChip8::write(std::ostream& os) const
 {
     os << "Cpu state" << std::endl;
-    os << "name" << "\t" << "value" << std::endl;
-    os << "i" << "\t" << int_to_hexstring(i, 3) << std::endl;
-    os << "op" << "\t" << int_to_hexstring(opcode, 4) << std::endl;
-    os << "pc" << "\t" << int_to_hexstring(pc, 3) << std::endl;
-    os << "sp" << "\t" << int_to_hexstring(sp, 2) << std::endl;
+    os << "name"
+       << "\t"
+       << "value" << std::endl;
+    os << "i"
+       << "\t" << int_to_hexstring(i, 3) << std::endl;
+    os << "op"
+       << "\t" << int_to_hexstring(opcode, 4) << std::endl;
+    os << "pc"
+       << "\t" << int_to_hexstring(pc, 3) << std::endl;
+    os << "sp"
+       << "\t" << int_to_hexstring(sp, 2) << std::endl;
     std::uint8_t index = 0;
     for (auto i : v) {
         os << "v" << std::hex << static_cast<std::uint16_t>(index++) << "\t" << int_to_hexstring(i, 2) << "\t" << std::endl;
@@ -157,7 +164,8 @@ std::ostream& CpuChip8::write(std::ostream& os) const
     return os;
 }
 
-std::ostream& CpuChip8::printDisassembly(std::ostream& os) {
+std::ostream& CpuChip8::printDisassembly(std::ostream& os)
+{
     os << "address\topcode\tdescription" << std::endl;
     for (std::uint32_t i = pc; i < memory.size();) {
         std::unique_ptr<Opcode>& instruction = emitOpcode(&memory[i]);
