@@ -1,5 +1,7 @@
 #include "DisplayChip8.h"
 
+#include <SDL2/SDL.h>
+
 DisplayChip8::DisplayChip8(const std::string& name, float scale)
 {
     SDL_InitSubSystem(SDL_INIT_VIDEO);

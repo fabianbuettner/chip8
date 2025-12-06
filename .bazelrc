@@ -1,0 +1,17 @@
+build --announce_rc
+build --features=treat_warnings_as_errors
+build --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build --verbose_failures
+
+# Import toolchain registrations from nix develop (generated per-shell)
+try-import %workspace%/.nix-bazel-deps/.bazelrc.nix
+
+#common --incompatible_enable_cc_toolchain_resolution
+common --nobuild_runfile_links
+common --nolegacy_external_runfiles
+# Nix integration (paths provided via .nix-bazel-deps)
+common --repository_cache=.nix-bazel-deps/repo-cache
+
+# Hermetic nix build config (used by nix build)
+common:nix --registry=file://%workspace%/.nix-bazel-deps/registry
+common:nix --lockfile_mode=error

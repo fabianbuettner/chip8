@@ -1,0 +1,38 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+cc_library(
+    name = "chip8_lib",
+    srcs = glob(
+        ["src/*.cpp"],
+        exclude = [
+            "src/chip8_emulator.cpp",
+            "src/chip8_disassembler.cpp",
+        ],
+    ),
+    hdrs = glob(["src/*.h"]),
+    includes = ["src"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@boost",
+        "@sdl2",
+    ],
+)
+
+cc_binary(
+    name = "chip8_emulator",
+    srcs = ["src/chip8_emulator.cpp"],
+    deps = [
+        ":chip8_lib",
+        "@boost",
+        "@sdl2",
+    ],
+)
+
+cc_binary(
+    name = "chip8_disassembler",
+    srcs = ["src/chip8_disassembler.cpp"],
+    deps = [
+        ":chip8_lib",
+        "@boost",
+    ],
+)

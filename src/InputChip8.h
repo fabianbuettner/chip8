@@ -2,8 +2,8 @@
 
 #include "Input.h"
 
-#include <SDL2/SDL.h>
 #include <array>
+#include <cstdint>
 
 struct InputChip8 : public Input {
     std::array<std::uint16_t, 16> keypad;

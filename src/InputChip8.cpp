@@ -1,5 +1,7 @@
 #include "InputChip8.h"
 
+#include <SDL2/SDL.h>
+
 InputChip8::InputChip8(void)
 {
     SDL_InitSubSystem(SDL_INIT_EVENTS);

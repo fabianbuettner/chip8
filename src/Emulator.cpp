@@ -1,10 +1,10 @@
 #include "Emulator.h"
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
-Emulator::Emulator(boost::asio::io_service& io, Machine& machine, std::uint32_t emulation_clock_speed)
+Emulator::Emulator(boost::asio::io_context& io, Machine& machine, std::uint32_t emulation_clock_speed)
     : machine { machine }
-    , cpu_clock(io, boost::posix_time::milliseconds(1000 / emulation_clock_speed))
+    , cpu_clock(io, std::chrono::milliseconds(1000 / emulation_clock_speed))
     , emulation_clock_speed { emulation_clock_speed }
 {
     cpu_clock.async_wait(boost::bind(&Emulator::cycle, this));
@@ -20,6 +20,6 @@ void Emulator::cycle(void)
         return;
     }
 
-    cpu_clock.expires_at(cpu_clock.expires_at() + boost::posix_time::milliseconds(1000 / emulation_clock_speed));
+    cpu_clock.expires_at(cpu_clock.expiry() + std::chrono::milliseconds(1000 / emulation_clock_speed));
     cpu_clock.async_wait(boost::bind(&Emulator::cycle, this));
 }

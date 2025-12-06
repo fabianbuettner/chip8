@@ -1,0 +1,52 @@
+module(
+    name = "chip8",
+    version = "0.0.1",
+)
+
+# needed because of archive_override of flazel
+bazel_dep(name = "bazel_skylib", version = "1.7.1", dev_dependency = True)
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "rules_cc", version = "0.1.4")
+bazel_dep(name = "flazel", version = "0.0.1")
+
+archive_override(
+    module_name = "flazel",
+    urls = ["https://github.com/fabianbuettner/flazel/archive/d05a944c63866210456e9f598a1f7c88b3e5ca3e.tar.gz"],
+    strip_prefix = "flazel-d05a944c63866210456e9f598a1f7c88b3e5ca3e",
+    integrity = "sha256-0/GM90Zu1lhA6Q9j4y00XCrtCVezeJPCwQEBCWdq4Go=",
+)
+
+archive_override(
+    module_name = "hedron_compile_commands",
+    urls = ["https://github.com/hedronvision/bazel-compile-commands-extractor/archive/4f28899228fb3ad0126897876f147ca15026151e.tar.gz"],
+    strip_prefix = "bazel-compile-commands-extractor-4f28899228fb3ad0126897876f147ca15026151e",
+    integrity = "sha256-ZYEiz7HyW+duohKwD16wR9jirci8+SO5GEYfKx43zfI=",
+)
+
+# Nix-provided CC toolchains and libraries (requires nix develop or nix build)
+#
+# Toolchains: local_config_cc_<name> and local_config_cc_<name>_deps
+# Use --platforms=@local_config_cc_<name>//:platform to select a toolchain
+#
+# Libraries: Alias repos that auto-select the correct architecture based on platform
+# Access as @boost//:boost - the right variant is selected automatically
+nix_cc = use_extension("@flazel//bazel:nix_cc.bzl", "nix_cc")
+
+# Declare packages (libraries)
+nix_cc.package(name = "boost")
+nix_cc.package(name = "sdl2")
+
+# Declare toolchains
+nix_cc.toolchain(name = "default")
+
+use_repo(
+    nix_cc,
+    # Toolchains
+    "local_config_cc_default",
+    "local_config_cc_default_deps",
+    # Libraries (alias repos with automatic platform selection)
+    "boost",
+    "sdl2",
+)

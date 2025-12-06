@@ -1,1 +1,7 @@
-build/
+bazel-*
+external
+result
+.cache/
+.direnv/
+*.swp
+.nix-bazel-deps

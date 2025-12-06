@@ -13,7 +13,7 @@ bool Opcode8xy5::execute(void)
     std::uint8_t x = (opcode & 0x0f00) >> 8;
     std::uint8_t y = (opcode & 0x00f0) >> 4;
     std::uint8_t borrow = cpu.v[x] >= cpu.v[y];
-    //cpu.v[x] = abs(cpu.v[x] - cpu.v[y]);
+    // cpu.v[x] = abs(cpu.v[x] - cpu.v[y]);
     cpu.v[x] = cpu.v[x] - cpu.v[y];
     cpu.v[0xf] = borrow;
     return true;
